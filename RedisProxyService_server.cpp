@@ -41,8 +41,7 @@ public:
 	void getAllUser(std::vector<User> & _return) {
 		// Your implementation goes here
 		printf("getAllUser\n");
-		std::vector<User> users = this->redisProxy->getAllUser();
-		_return = users;
+		this->redisProxy->getAllUser(_return);
 	}
 
 	int64_t addWord(const Word& word) {
@@ -65,8 +64,7 @@ public:
 	void getAllWord(std::vector<Word> & _return) {
 		// Your implementation goes here
 		printf("getAllWord\n");
-		std::vector<Word> words = this->redisProxy->getAllWord();
-		_return = words;
+		this->redisProxy->getAllWord(_return);
 	}
 
 	void addToken(const Token& token) {
@@ -78,6 +76,7 @@ public:
 	}
 
 	void getToken(Token& _return, const std::string& name) {
+		printf("getToken\n");
 		boost::shared_ptr<Token> token = this->redisProxy->getTokenByName(name);
 		if (token == NULL) {
 			Token token;
@@ -86,13 +85,11 @@ public:
 		} else {
 			_return = *token;
 		}
-		printf("getToken\n");
 	}
 
 	void getAllToken(std::vector<Token> & _return) {
 		printf("getAllToken\n");
-		std::vector<Token> tokens = this->redisProxy->getAllToken();
-		_return = tokens;
+		this->redisProxy->getAllToken(_return);
 	}
 private:
 	shared_ptr<RedisProxy> redisProxy;

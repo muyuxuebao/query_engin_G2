@@ -29,15 +29,14 @@ long RedisProxy::addUser(User user) {
 
 	if (redis_tag == false) {
 		user.id = 1;
-		this->redis->set(USER_NUM_key, "1");
+//		this->redis->set(USER_NUM_key, user.id);
 	} else {
 		long userNum;
-		std::stringstream ss1, ss2;
+		std::stringstream ss1;
 		ss1 << user_id_str;
 		ss1 >> userNum;
 		user.id = userNum + 1;
-		ss2 << user.id;
-		this->redis->set(USER_NUM_key, ss2.str());
+
 	}
 
 	std::stringstream idSs, valueSs;
@@ -52,6 +51,13 @@ long RedisProxy::addUser(User user) {
 	std::string value = valueSs.str();
 
 	this->redis->set(USER_PERFIX_key, value);
+
+	{ //update user num
+		std::stringstream user_num_ss;
+		user_num_ss << user.id;
+		this->redis->set(USER_NUM_key, user_num_ss.str());
+	}
+
 	return user.id;
 }
 
@@ -103,18 +109,25 @@ boost::shared_ptr<User> RedisProxy::getUserByKey(std::string key) {
 	}
 }
 
-std::vector<User> RedisProxy::getAllUser() {
+bool RedisProxy::getAllUser(std::vector<User> &users) {
 	std::list<std::string> keyList;
-	this->redis->getPrefixKey(ConstValue::USER_PERFIX, keyList);
-	std::vector<User> userVector;
+
+	bool tag = this->redis->getPrefixKey(ConstValue::USER_PERFIX, keyList);
+	if (tag == false) {
+		return tag;
+	}
+
 	for (std::list<std::string>::iterator it = keyList.begin();
 			it != keyList.end(); it++) {
 		std::string s = *(it);
 		boost::shared_ptr<User> user = this->getUserByKey(s);
-		userVector.push_back(*user);
+		if (user == NULL) {
+			return false;
+		} else {
+			users.push_back(*user);
+		}
 	}
-
-	return userVector;
+	return tag;
 }
 
 boost::shared_ptr<Word> RedisProxy::getWordByKey(std::string key) {
@@ -142,18 +155,25 @@ boost::shared_ptr<Word> RedisProxy::getWordByKey(std::string key) {
 	}
 }
 
-std::vector<Word> RedisProxy::getAllWord() {
-	std::list<std::string> keyList = this->redis->getPrefixKey(
-			ConstValue::WORD_PERFIX);
-	std::vector<Word> wordVector;
+bool RedisProxy::getAllWord(std::vector<Word> &words) {
+	std::list<std::string> keyList;
+	bool tag = this->redis->getPrefixKey(ConstValue::WORD_PERFIX, keyList);
+	if (tag == false) {
+		return tag;
+	}
+
 	for (std::list<std::string>::iterator it = keyList.begin();
 			it != keyList.end(); it++) {
 		std::string s = *(it);
 		boost::shared_ptr<Word> word = this->getWordByKey(s);
-		wordVector.push_back(*word);
+		if (word == NULL) {
+			return false;
+		} else {
+			words.push_back(*word);
+		}
 	}
 
-	return wordVector;
+	return tag;
 
 }
 long RedisProxy::addWord(Word word) {
@@ -165,15 +185,12 @@ long RedisProxy::addWord(Word word) {
 	bool redis_tag = this->redis->get(WORD_NUM_key, s_wordId);
 	if (redis_tag == false) {
 		word.id = 1;
-		this->redis->set(WORD_NUM_key, "1");
 	} else {
 		long wordNum;
-		std::stringstream ss1, ss2;
+		std::stringstream ss1;
 		ss1 << s_wordId;
 		ss1 >> wordNum;
 		word.id = wordNum + 1;
-		ss2 << (wordNum + 1);
-		this->redis->set(WORD_NUM_key, ss2.str());
 	}
 
 	std::stringstream idSs, valueSs;
@@ -188,6 +205,12 @@ long RedisProxy::addWord(Word word) {
 	std::string value = valueSs.str();
 
 	this->redis->set(WORD_PERFIX_key, value);
+
+	{ //update word num
+		std::stringstream word_num_ss;
+		word_num_ss << word.id;
+		this->redis->set(WORD_NUM_key, word_num_ss.str());
+	}
 	return word.id;
 }
 
@@ -325,16 +348,24 @@ boost::shared_ptr<Token> RedisProxy::getTokenByName(std::string name) {
 	}
 
 }
-std::vector<Token> RedisProxy::getAllToken() {
-	std::list<std::string> keyList = this->redis->getPrefixKey(
-			ConstValue::TOKEN_PERFIX);
-	std::vector<Token> v;
-	for (std::list<std::string>::iterator it = keyList.begin();
-			it != keyList.end(); it++) {
-		v.push_back(*this->getTokenByKey(*(it)));
+bool RedisProxy::getAllToken(std::vector<Token> &tokens) {
+	std::list<std::string> keyList;
+	bool tag = this->redis->getPrefixKey(ConstValue::TOKEN_PERFIX, keyList);
+	if (tag == false) {
+		return tag;
 	}
 
-	return v;
+	for (std::list<std::string>::iterator it = keyList.begin();
+			it != keyList.end(); it++) {
+		boost::shared_ptr<Token> token = this->getTokenByKey(*(it));
+		if (token == NULL) {
+			return false;
+		} else {
+			tokens.push_back(*token);
+		}
+	}
+
+	return tag;
 }
 //void RedisProxy::userBuyWord(long userId, long wordId) {
 //	boost::shared_ptr<Word> word = this->getWordById(wordId);
@@ -514,7 +545,7 @@ std::vector<Token> RedisProxy::getAllToken() {
 //}
 //
 //std::vector<std::string> RedisProxy::cutString(std::string ws) {
-//	std::vector<std::string> v;
+//	std::vector<std::string> ;
 //	for (unsigned int i = 0; i < ws.size();) {
 //		if (ws[i] >= ConstValue::CHINA_START
 //				&& ws[i] <= ConstValue::CHINA_END) {

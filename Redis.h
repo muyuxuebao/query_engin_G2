@@ -53,21 +53,6 @@ public:
 		return tag;
 	}
 
-	std::list<std::string> getPrefixKey(std::string prefix) {
-		std::list<std::string> list;
-		redisReply* _reply = (redisReply*) redisCommand(this->_connect,
-				"KEYS %s", (prefix + "*").c_str());
-		if (_reply->type == REDIS_REPLY_ARRAY) {
-			for (unsigned int i = 0; i < _reply->elements; ++i) {
-				redisReply* childReply = _reply->element[i];
-				if (childReply->type == REDIS_REPLY_STRING) {
-					list.push_back(childReply->str);
-				}
-			}
-		}
-		freeReplyObject(_reply);
-		return list;
-	}
 
 	bool getPrefixKey(std::string prefix, std::list<std::string> &list) {
 		bool tag = true;

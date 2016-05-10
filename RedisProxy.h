@@ -30,12 +30,12 @@ public:
 	long addUser(User user);
 	boost::shared_ptr<User> getUserById(long id);
 	boost::shared_ptr<User> getUserByKey(std::string key);
-	std::vector<User> getAllUser();
-	std::vector<Token> getAllToken();
+	bool getAllUser(std::vector<User> &users);
+	bool getAllToken(std::vector<Token> &tokens);
 	long addWord(Word word);
 	boost::shared_ptr<Word> getWordById(long id);
 	boost::shared_ptr<Word> getWordByKey(std::string key);
-	std::vector<Word> getAllWord();
+	bool getAllWord(std::vector<Word> &words);
 	void addToken(Token token);
 	boost::shared_ptr<Token> getTokenByName(std::string s);
 	boost::shared_ptr<Token> getTokenByKey(std::string key);
