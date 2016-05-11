@@ -53,11 +53,8 @@ bool QueryEngineServer::stop() {
 }
 
 QueryEngineServer::QueryEngineServer() {
-	// TODO Auto-generated constructor stub
-
 }
 
 QueryEngineServer::~QueryEngineServer() {
-	// TODO Auto-generated destructor stub
 }
 
