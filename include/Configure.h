@@ -21,7 +21,7 @@ using namespace libconfig;
 #ifndef CONFIGURE_H_
 #define CONFIGURE_H_
 
-const std::string d_cfg_path = "query_engine.cfg";
+const std::string d_cfg_path = "./conf/query_engine.cfg";
 
 class Configure {
 public:
