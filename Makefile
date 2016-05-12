@@ -6,17 +6,18 @@ INCLUDE = -Iinclude
 
 THIFT_LIBS = -lthrift
 REDIS_LIBS = -lhiredis
-CONFIG_LIBS = -lconfig++
+LIBCONFIG_LIBS = -lconfig++
 TEST_LIBS = -pthread -lgtest -lhiredis
 BOST_LIBS = -lboost_system -lboost_thread -lboost_filesystem
 
 
+LIBCONFIG_OBJS = Configure.o 
 
-THIFT_OBJS = query_engin_G2_constants.o query_engin_G2_types.o RedisProxyService.o  QueryEngineServer.o
+THIFT_OBJS = query_engin_G2_constants.o query_engin_G2_types.o RedisProxyService.o RedisProxyServiceHandler.o 
 
 REDIS_OBJ  = Redis.o RedisProxy.o ConstValue.o
 
-SERVER_OBJS = Configure.o RedisProxyServiceHandler.o main.o 
+SERVER_OBJS = QueryEngineServer.o main.o
 
 
 
@@ -31,15 +32,14 @@ TEST_OBJS = test.o testMain.o
 all: $(SERVER_TARGET)
 
 
-$(TEST_TARGET): $(THIFT_OBJS) $(TEST_OBJS)
-	$(CXX) -o $(TEST_TARGET) $(THIFT_OBJS) $(TEST_OBJS) $(TEST_LIBS) $(THIFT_LIBS) \
-	 $(CONFIG_LIBS) $(INCLUDE)
+$(TEST_TARGET): $(THIFT_OBJS) $(TEST_OBJS) $(REDIS_OBJ) $(LIBCONFIG_OBJS)
+	$(CXX) -o ./bin/$(TEST_TARGET) $(THIFT_OBJS) $(REDIS_OBJ) $(TEST_OBJS) $(TEST_LIBS) $(THIFT_LIBS) \
+	$(LIBCONFIG_LIBS) $(INCLUDE)
 
 
-$(SERVER_TARGET):	$(THIFT_OBJS) $(SERVER_OBJS) $(REDIS_OBJ)
-	$(CXX) -o $(SERVER_TARGET) $(THIFT_OBJS) $(SERVER_OBJS)  $(REDIS_OBJ) $(THIFT_LIBS) \
-	$(REDIS_LIBS) $(CONFIG_LIBS) $(BOST_LIBS) $(INCLUDE)
-	mv $(SERVER_TARGET) ./bin
+$(SERVER_TARGET): $(THIFT_OBJS) $(SERVER_OBJS) $(REDIS_OBJ) $(LIBCONFIG_OBJS)
+	$(CXX) -o ./bin/$(SERVER_TARGET) $(THIFT_OBJS) $(SERVER_OBJS)  $(LIBCONFIG_OBJS) $(REDIS_OBJ) $(THIFT_LIBS) \
+	$(REDIS_LIBS) $(LIBCONFIG_LIBS) $(BOST_LIBS) $(INCLUDE)
 	
 
 %.o : %.cpp
@@ -50,8 +50,8 @@ server: $(SERVER_TARGET)
 	@echo "server start..."
 	@./bin/$(SERVER_TARGET)
 clean:
-	rm -f *.o ./bin/$(SERVER_TARGET)  $(TEST_TARGET)
+	rm -f *.o ./bin/$(SERVER_TARGET)  ./bin/$(TEST_TARGET)
 	
 	
 test: $(TEST_TARGET)
-	@./$(TEST_TARGET)
+	@./bin/$(TEST_TARGET)

@@ -32,138 +32,138 @@ protected:
 	}
 };
 
-//TEST_F(Gtest, test_Redis) {
-//	bool tag;
-//	tag = this->redis->set("aaa", "bbb");
-//	std::cout << tag << std::endl;
-//	std::string value;
-//	tag = this->redis->get("aaa", value);
-//	std::cout << tag << std::endl;
-//	std::cout << value << std::endl;
-//}
+TEST_F(Gtest, test_Redis) {
+	bool tag;
+	tag = this->redis->set("aaa", "bbb");
+	std::cout << tag << std::endl;
+	std::string value;
+	tag = this->redis->get("aaa", value);
+	std::cout << tag << std::endl;
+	std::cout << value << std::endl;
+}
 
-//TEST_F(Gtest, test_User) {
-//	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-//	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-//	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-//	RedisProxyServiceClient client(protocol);
-//
-//	try {
-//		transport->open();
-//
-//		Request request;
-//		Response response;
-//
-//		{ //add user
-//			request.querytype = QueryType::ADD_USER;
-//			User user;
-//			user.name = "user_1";
-//			request.__set_add_user_user(user);
-//
-//			client.process(response, request);
-//
-//			std::cout << "id_client = " << response.add_user_user_id
-//					<< std::endl;
-//		}
-//		{ // get user
-//			request.querytype = QueryType::GET_USER;
-//			User user1;
-//			long id = 1;
-//			request.__set_get_user_user_id(id);
-//			client.process(response, request);
-//			printf("user1: %ld  %s\n", user1.id,
-//					response.get_user_user.name.c_str());
-//		}
-//
-//		{ // add 9 users
-//			for (int i = 2; i <= 10; i++) {
-//				request.querytype = QueryType::ADD_USER;
-//				User tu;
-//				std::stringstream ss;
-//				ss << i;
-//				std::string ts;
-//				ss >> ts;
-//				tu.name = "user_" + ts;
-//				request.__set_add_user_user(tu);
-//				client.process(response, request);
-//			}
-//		}
-//		{ // get all users
-//
-//			request.querytype = QueryType::GET_ALL_USER;
-//
-//			client.process(response, request);
-//			std::vector<User> users = response.get_all_user_user_list;
-//
-//			for (unsigned int i = 0; i < users.size(); i++) {
-//				printf("%ld  %s\n", users[i].id, users[i].name.c_str());
-//			}
-//		}
-//
-//		transport->close();
-//	} catch (TException& tx) {
-//		cout << "ERROR: " << tx.what() << endl;
-//	}
-//}
+TEST_F(Gtest, test_User) {
+	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+	RedisProxyServiceClient client(protocol);
 
-//TEST_F(Gtest, test_Word) {
-//	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-//	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-//	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-//	RedisProxyServiceClient client(protocol);
-//
-//	try {
-//		transport->open();
-//		Request request;
-//		Response response;
-//		{ // add word
-//			request.querytype = QueryType::ADD_WORD;
-//			Word word;
-//			word.name = "word_1";
-//			request.__set_add_word_word(word);
-//			client.process(response, request);
-//			std::cout << "id_client_word = " << response.add_word_word_id
-//					<< std::endl;
-//		}
-//		{ // get word
-//			request.querytype = QueryType::GET_WORD;
-//			Word word1;
-//			long id = 1;
-//			request.__set_get_word_word_id(id);
-//			client.process(response, request);
-//			printf("%ld  %s\n", word1.id, response.get_word_word.name.c_str());
-//
-//		}
-//
-//		{ //add 9 words
-//			for (int i = 2; i <= 10; i++) {
-//				request.querytype = QueryType::ADD_WORD;
-//				Word tw;
-//				std::stringstream ss;
-//				ss << i;
-//				std::string ts;
-//				ss >> ts;
-//				tw.name = "word_" + ts;
-//
-//				request.__set_add_word_word(tw);
-//				client.process(response, request);
-//			}
-//		}
-//
-//		{ // get all words
-//			request.querytype = QueryType::GET_ALL_WORD;
-//			client.process(response, request);
-//			std::vector<Word> words = response.get_all_word_word_list;
-//			for (unsigned int i = 0; i < words.size(); i++) {
-//				printf("%ld  %s\n", words[i].id, words[i].name.c_str());
-//			}
-//		}
-//
-//		transport->close();
-//	} catch (TException& tx) {
-//		cout << "ERROR: " << tx.what() << endl;
-//	}
-//}
+	try {
+		transport->open();
+
+		Request request;
+		Response response;
+
+		{ //add user
+			request.querytype = QueryType::ADD_USER;
+			User user;
+			user.name = "user_1";
+			request.__set_add_user_user(user);
+
+			client.process(response, request);
+
+			std::cout << "id_client = " << response.add_user_user_id
+					<< std::endl;
+		}
+		{ // get user
+			request.querytype = QueryType::GET_USER;
+			User user1;
+			long id = 1;
+			request.__set_get_user_user_id(id);
+			client.process(response, request);
+			printf("user1: %ld  %s\n", user1.id,
+					response.get_user_user.name.c_str());
+		}
+
+		{ // add 9 users
+			for (int i = 2; i <= 10; i++) {
+				request.querytype = QueryType::ADD_USER;
+				User tu;
+				std::stringstream ss;
+				ss << i;
+				std::string ts;
+				ss >> ts;
+				tu.name = "user_" + ts;
+				request.__set_add_user_user(tu);
+				client.process(response, request);
+			}
+		}
+		{ // get all users
+
+			request.querytype = QueryType::GET_ALL_USER;
+
+			client.process(response, request);
+			std::vector<User> users = response.get_all_user_user_list;
+
+			for (unsigned int i = 0; i < users.size(); i++) {
+				printf("%ld  %s\n", users[i].id, users[i].name.c_str());
+			}
+		}
+
+		transport->close();
+	} catch (TException& tx) {
+		cout << "ERROR: " << tx.what() << endl;
+	}
+}
+
+TEST_F(Gtest, test_Word) {
+	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+	RedisProxyServiceClient client(protocol);
+
+	try {
+		transport->open();
+		Request request;
+		Response response;
+		{ // add word
+			request.querytype = QueryType::ADD_WORD;
+			Word word;
+			word.name = "word_1";
+			request.__set_add_word_word(word);
+			client.process(response, request);
+			std::cout << "id_client_word = " << response.add_word_word_id
+					<< std::endl;
+		}
+		{ // get word
+			request.querytype = QueryType::GET_WORD;
+			Word word1;
+			long id = 1;
+			request.__set_get_word_word_id(id);
+			client.process(response, request);
+			printf("%ld  %s\n", word1.id, response.get_word_word.name.c_str());
+
+		}
+
+		{ //add 9 words
+			for (int i = 2; i <= 10; i++) {
+				request.querytype = QueryType::ADD_WORD;
+				Word tw;
+				std::stringstream ss;
+				ss << i;
+				std::string ts;
+				ss >> ts;
+				tw.name = "word_" + ts;
+
+				request.__set_add_word_word(tw);
+				client.process(response, request);
+			}
+		}
+
+		{ // get all words
+			request.querytype = QueryType::GET_ALL_WORD;
+			client.process(response, request);
+			std::vector<Word> words = response.get_all_word_word_list;
+			for (unsigned int i = 0; i < words.size(); i++) {
+				printf("%ld  %s\n", words[i].id, words[i].name.c_str());
+			}
+		}
+
+		transport->close();
+	} catch (TException& tx) {
+		cout << "ERROR: " << tx.what() << endl;
+	}
+}
 
 TEST_F(Gtest, test_Token) {
 	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
@@ -220,118 +220,3 @@ TEST_F(Gtest, test_Token) {
 	}
 }
 
-//
-//TEST_F(Gtest, test_UserBuyWordAndGetChargeUsers) {
-//	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-//	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-//	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-//	RedisProxyServiceClient client(protocol);
-//
-//	try {
-//		transport->open();
-//
-//		User user;
-//		user.name = "wangermazi";
-//		Word word;
-//		word.name = "北A鲜B";
-//		user.id = client.addUser(user);
-//		word.id = client.addWord(word);
-//		client.userBuyWord(user.id, word.id);
-//
-//		User user1;
-//		user1.name = "zhangsan";
-//		Word word1;
-//		word1.name = "京鲜花盆";
-//		user1.id = client.addUser(user1);
-//		word1.id = client.addWord(word1);
-//		client.userBuyWord(user1.id, word.id);
-//
-//		User user2;
-//		user2.name = "lisi";
-//		user2.id = client.addUser(user2);
-//		client.userBuyWord(user.id, word1.id);
-//
-//		User user3;
-//		user3.name = "wangwu";
-//		user3.id = client.addUser(user3);
-//		client.userBuyWord(user3.id, word1.id);
-//
-//		User user4;
-//		user4.name = "xxx";
-//		user4.id = client.addUser(user4);
-//		client.userBuyWord(user4.id, word.id);
-//
-//		std::vector<User> userVector;
-//		Word word_cu;
-//		word_cu.name = "北A鲜B";
-//		client.getChargeUsers(userVector, word_cu);
-//
-//		printf(
-//				"****************************charge users*********************************\n");
-//		for (unsigned int i = 0; i < userVector.size(); i++) {
-//			printf("%ld, %s\n", userVector[i].id, userVector[i].name.c_str());
-//		}
-//
-//		printf(
-//				"****************************get All token*********************************\n");
-//		std::vector<Token> tokens;
-//		client.getAllToken(tokens);
-//		for (unsigned int i = 0; i < tokens.size(); i++) {
-//			std::cout << tokens[i].name << std::endl;
-//		}
-//
-//		transport->close();
-//	} catch (TException& tx) {
-//		cout << "ERROR: " << tx.what() << endl;
-//	}
-//}
-
-//TEST_F(Gtest, test_UserBuyWordAndGetChargeUsers2) {
-//	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-//	boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-//	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-//	RedisProxyServiceClient client(protocol);
-//
-//	try {
-//		transport->open();
-//
-//		User user;
-//		user.name = "wangermazi";
-//		Word word;
-//		word.name = "中华人民共和国";
-//		user.id = client.addUser(user);
-//		word.id = client.addWord(word);
-//		client.userBuyWord(user.id, word.id);
-//
-//		User user1;
-//		user1.name = "zhangsan";
-//		Word word1;
-//		word1.name = "中华人民";
-//		user1.id = client.addUser(user1);
-//		word1.id = client.addWord(word1);
-//		client.userBuyWord(user1.id, word.id);
-//
-//		std::vector<User> userVector;
-//		Word word_cu;
-//		word_cu.name = "华人民共";
-//		client.getChargeUsers(userVector, word_cu);
-//
-//		printf(
-//				"****************************charge users*********************************\n");
-//		for (unsigned int i = 0; i < userVector.size(); i++) {
-//			printf("%ld, %s\n", userVector[i].id, userVector[i].name.c_str());
-//		}
-//
-//		printf(
-//				"****************************get All token*********************************\n");
-//		std::vector<Token> tokens;
-//		client.getAllToken(tokens);
-//		for (unsigned int i = 0; i < tokens.size(); i++) {
-//			std::cout << tokens[i].name << std::endl;
-//		}
-//
-//		transport->close();
-//	} catch (TException& tx) {
-//		cout << "ERROR: " << tx.what() << endl;
-//	}
-//}

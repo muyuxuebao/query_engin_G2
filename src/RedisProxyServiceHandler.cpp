@@ -93,7 +93,7 @@ void RedisProxyServiceHandler::process(Response& response,
 			std::vector<Token> tokens;
 			this->redisProxy->getAllToken(tokens);
 
-			std::cout << "tokens.size()" << tokens.size() << std::endl;
+//			std::cout << "tokens.size()" << tokens.size() << std::endl;
 			response.__set_get_all_token_token_list(tokens);
 		}
 		break;
